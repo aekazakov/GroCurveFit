@@ -1,0 +1,41 @@
+#
+# define display information
+#
+name: Fit Growth Curve
+
+tooltip: |
+	Fits growth curves.
+
+screenshots: []
+
+icon: icon.png
+
+#
+# define a set of similar methods that might be useful to the user
+#
+suggestions:
+	apps:
+		related:
+			[]
+		next:
+			[]
+	methods:
+		related:
+			[]
+		next:
+			[]
+
+#
+# Configure the display and description of parameters
+#
+parameters :
+    growth_matrix_id :
+        ui-name : |
+            Growth Matrix Id
+        short-hint : |
+            The growth matrix to examine
+        long-hint  : |
+            The growth matrix for which you want to fir growth curve.
+
+description : |
+	<p>This is a simple method designed to illustrate the KBase SDK. All it does is count the number of contigs in a contig set, but it uses most of the KBase apparatus in an end-to-end example.</p>

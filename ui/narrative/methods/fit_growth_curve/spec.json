@@ -1,0 +1,58 @@
+{
+    "ver": "0.0.1",
+    "authors": [
+        "kazakov"
+    ],
+    "contact": "help@kbase.us",
+    "visible": true,
+    "categories": ["active"],
+    "widgets": {
+        "input": null,
+        "output": null
+    },
+	"parameters": [ 
+		{
+			"id": "growth_matrix_id",
+			"optional": false,
+			"advanced": false,
+			"allow_multiple": false,
+			"default_values": [ "" ],
+			"field_type": "text",
+			"text_options": {
+				"valid_ws_types": [ "KBaseEnigmaMetals.GrowthMatrix" ]
+			}
+		}
+	],
+	"behavior": {
+		"service-mapping": {
+			"url": "",
+			"name": "GroCurveFit",
+			"method": "fit_growth_curve",
+			"input_mapping": [
+				{
+					"narrative_system_variable": "workspace",
+					"target_argument_position": 0
+				},
+				{
+					"input_parameter": "growth_matrix_id",
+					"target_argument_position": 1
+				}
+			],
+			"output_mapping": [
+				{
+					"service_method_output_path": [0, "lag_phase"],
+					"target_property": "lagPhase"
+				},
+				{
+					"input_parameter": "growth_matrix_id",
+					"target_property": "growthMatrixId"
+				},
+				{
+					"narrative_system_variable": "workspace",
+					"target_property": "workspaceName"
+				}
+			]
+		}
+	},
+    "job_id_output_field": "docker"
+}
