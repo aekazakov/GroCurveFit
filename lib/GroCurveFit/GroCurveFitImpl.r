@@ -28,7 +28,6 @@ methods[["GroCurveFit.count_contigs"]] <- function(workspace_name, contigset_id,
 methods[["GroCurveFit.fit_growth_curve"]] <- function(workspace_name, growth_matrix_id, context) {
     #BEGIN fit_growth_curve
     token <- context[['token']]
-    print(token)
     provenance <- context[['provenance']]
     ws_url <- context[['config']][['workspace-url']]
     ws_client <- WorkspaceClient(ws_url, token)
@@ -63,7 +62,7 @@ methods[["GroCurveFit.fit_growth_curve"]] <- function(workspace_name, growth_mat
 	}
 #    print(timepoints)
     time <- t(matrix(rep(timepoints, samples_number), c(timepoints_number, samples_number)))
-    print(time)
+#    print(time)
     
     print("Making data frame")
 #    print (values)
@@ -94,11 +93,11 @@ methods[["GroCurveFit.fit_growth_curve"]] <- function(workspace_name, growth_mat
    	    data[, i+3] = data_col_i
     	
 	}
-    print(data)
+ #   print(data)
     
     print("Running grofit")
     result <- gcFit(time,data, control=grofit.control(fit.opt="b"))
-	print(summary(result))
+#	print(summary(result))
 #	print(result)
 	result_frame <- summary(result)
 	ret_data <- result_frame[,c("TestId","mu.model", "lambda.model", "A.model", "integral.model")]
@@ -111,7 +110,7 @@ methods[["GroCurveFit.fit_growth_curve"]] <- function(workspace_name, growth_mat
 	}
 	
 	colnames(ret_data) <- c("sample_id", "mu", "lambda", "a", "integral")
-#	ret <- toJSON(ret_data)
+	print(toJSON(ret_data))
 		
     return(list(growth_parameters=ret_data, provenance=provenance))
     #END fit_growth_curve
