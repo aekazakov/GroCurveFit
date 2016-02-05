@@ -1,5 +1,6 @@
 #BEGIN_HEADER
 library(jsonlite)
+library(testthat)
 library(grofit)
 #END_HEADER
 
