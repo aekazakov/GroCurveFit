@@ -96,7 +96,7 @@ methods[["GroCurveFit.fit_growth_curve"]] <- function(workspace_name, growth_mat
  #   print(data)
     
     print("Running grofit")
-    result <- gcFit(time,data, control=grofit.control(fit.opt="b"))
+    result <- gcFit(time,data, control=grofit.control(fit.opt="b",suppress.messages = TRUE))
 #	print(summary(result))
 #	print(result)
 	result_frame <- summary(result)
