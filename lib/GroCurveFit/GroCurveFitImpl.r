@@ -93,8 +93,12 @@ methods[["GroCurveFit.fit_growth_curve"]] <- function(workspace_name, growth_mat
    	    data[, i+3] = data_col_i
     	
 	}
-   print(data)
+    print(data)
     
+    print(packageVersion("grofit"))
+    print(sessionInfo())
+
+
     print("Running grofit")
     
     result <- gcFit(time,data, control=grofit.control(fit.opt="b",suppress.messages = FALSE, interactive = FALSE))
