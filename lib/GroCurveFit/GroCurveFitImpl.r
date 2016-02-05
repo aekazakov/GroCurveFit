@@ -53,7 +53,7 @@ methods[["GroCurveFit.fit_growth_curve"]] <- function(workspace_name, growth_mat
 		row_md_entries <- row_metadata[[row_name]]
 		for (row_md_pos in 1:length(row_md_entries)) {
 			md_entry <- row_md_entries[[row_md_pos]]
-			if (md_entry[["entity"]] == "TimeSeries")  {
+			if (md_entry[["category"]] == "TimeSeries")  {
 				if (md_entry[["property_name"]] == "Time") {
 					timepoints[row_num] <- as.numeric(md_entry[["property_value"]])
 				}
