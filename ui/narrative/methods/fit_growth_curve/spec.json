@@ -40,8 +40,8 @@
 			],
 			"output_mapping": [
 				{
-					"service_method_output_path": [0, "lag_phase"],
-					"target_property": "lagPhase"
+					"service_method_output_path": [0, "growth_parameters"],
+					"target_property": "growthParameters"
 				},
 				{
 					"input_parameter": "growth_matrix_id",

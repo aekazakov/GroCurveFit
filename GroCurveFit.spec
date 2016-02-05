@@ -21,8 +21,13 @@ module GroCurveFit {
     } CountContigsResults;
     
     typedef structure {
-        float lag_phase;
+    	string sample_id;
+    	float mu;
+        float lambda;
+        float a;
+        float integral;
     } GrowthCurveParameters;
+
     
     /*
         Count contigs in a ContigSet
@@ -30,5 +35,5 @@ module GroCurveFit {
     */
     funcdef count_contigs(workspace_name,contigset_id) returns (CountContigsResults) authentication required;
 
-    funcdef fit_growth_curve(workspace_name,growth_matrix_id) returns (GrowthCurveParameters) authentication required;
+    funcdef fit_growth_curve(workspace_name,growth_matrix_id) returns (list <GrowthCurveParameters> growth_parameters) authentication required;
 };
