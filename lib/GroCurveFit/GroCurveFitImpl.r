@@ -62,7 +62,7 @@ methods[["GroCurveFit.fit_growth_curve"]] <- function(workspace_name, growth_mat
 	}
 #    print(timepoints)
     time <- t(matrix(rep(timepoints, samples_number), c(timepoints_number, samples_number)))
-#    print(time)
+    print(time)
     
     print("Making data frame")
 #    print (values)
@@ -93,12 +93,14 @@ methods[["GroCurveFit.fit_growth_curve"]] <- function(workspace_name, growth_mat
    	    data[, i+3] = data_col_i
     	
 	}
- #   print(data)
+   print(data)
     
     print("Running grofit")
-    result <- gcFit(time,data, control=grofit.control(fit.opt="b",suppress.messages = TRUE, interactive = FALSE))
-#	print(summary(result))
-#	print(result)
+    
+    result <- gcFit(time,data, control=grofit.control(fit.opt="b",suppress.messages = FALSE, interactive = FALSE))
+    print ("grofit finished")
+	print(summary(result))
+	print("Creating output object")
 	result_frame <- summary(result)
 	ret_data <- result_frame[,c("TestId","mu.model", "lambda.model", "A.model", "integral.model")]
 
