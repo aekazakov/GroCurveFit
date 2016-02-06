@@ -400,7 +400,8 @@ methods[["GroCurveFit.fit_growth_curve"]] <- function(workspace_name, growth_mat
     	
 	}
     print(data)
-    
+    print("Write warn option")
+    print(options("warn"))
     print(packageVersion("grofit"))
     print(sessionInfo())
 
