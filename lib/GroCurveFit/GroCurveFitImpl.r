@@ -1,6 +1,5 @@
 #BEGIN_HEADER
 library(jsonlite)
-library(testthat)
 library(grofit)
 #END_HEADER
 
@@ -13,7 +12,7 @@ gcFitModel2 <-
 function(time, data, gcID ="undefined", control=grofit.control())
 {
 
-print("Start gcFitModel2")
+#print("Start gcFitModel2")
 # /// check input parameters
 if (is(control)!="grofit.control") stop("control must be of class grofit.control!")
 if (!control$fit.opt%in%c("m","b")) stop("Fit option is not set for a model fit. See grofit.control()")
@@ -73,8 +72,6 @@ else{
 	lmax <- max(l)
 	
 	# /// loop over all parametric models requested
-		print("loop over all parametric models requested")
-
 	for (i in 1:length(control$model.type)){
 		if (control$suppress.messages==FALSE){
 			cat(paste("--> Try to fit model", (control$model.type)[i]))
@@ -121,7 +118,7 @@ y.model <- NULL
 	
 	if (control$suppress.messages==FALSE) cat("\n") 
 	
-	print("extract parameters from data fit")
+#	print("extract parameters from data fit")
 	# /// extract parameters from data fit
 	if(is.null(best)==FALSE){
 		Abest      <- summary(best)$parameters["A",1:2]
@@ -136,7 +133,7 @@ y.model <- NULL
 		}
 	}
 	else{
-		#warning("gcFitModel: Unable to fit this curve parametrically!")
+#		warning("gcFitModel: Unable to fit this curve parametrically!")
 		print("Here was warning: gcFitModel: Unable to fit this curve parametrically!")
 		Abest        <- c(NA,NA)
 		mubest       <- c(NA,NA)
@@ -145,11 +142,11 @@ y.model <- NULL
 		fitFlag      <- FALSE
 	}
 } # end of else if(length(y)<5)
-print("Create gcFitModel output")
+#print("Create gcFitModel output")
 
 gcFitModel <- list(raw.time = time, raw.data = data, gcID = gcID, fit.time = time, fit.data = as.numeric(fitted.values(best)), parameters = list(A=Abest, mu=mubest, lambda=lambdabest, integral=Integralbest), model = used, nls = best, reliable=NULL, fitFlag=fitFlag, control = control)
 
-print("End gcFitModel2")
+#print("End gcFitModel2")
 class(gcFitModel) <- "gcFitModel"
 
 gcFitModel
@@ -159,7 +156,6 @@ gcFit2 <-
 function(time, data, control=grofit.control())
 {
 
-print("Start gcFit2")
 # /// check input parameters
 if (is(control)!="grofit.control") stop("control must be of class grofit.control!")
 
@@ -184,7 +180,6 @@ bootstrap.param <- NULL
 
 # /// loop over all wells
 for (i in 1:dim(data)[1]){
-	print("Start main loop iteration")
 
 	# /// conversion, to handle even data.frame inputs
 	acttime    <- as.numeric(as.matrix(time[i,]))
@@ -197,27 +192,20 @@ for (i in 1:dim(data)[1]){
 		cat("----------------------------------------------------\n")
 	}
 
-	print("Run gcFitModel")
 
 	# /// Parametric fit
 	if ((control$fit.opt=="m") || (control$fit.opt=="b")){
-		print("fitpara          <- gcFitModel(acttime, actwell, gcID, control)")
 		fitpara          <- gcFitModel2(acttime, actwell, gcID, control)
-		print("fitpara.all[[i]] <- fitpara")
 		fitpara.all[[i]] <- fitpara
 	}
 	else{
 	# /// generate empty object
-		print("fitpara          <- list(raw.x = acttime, raw.y = actwell, gcID = gcID, fit.x = NA, fit.y = NA, parameters = list(A=NA, mu=NA, lambda=NA, integral=NA), model = NA, nls = NA, reliable=NULL, fitFlag=FALSE, control = control)")
 		fitpara          <- list(raw.x = acttime, raw.y = actwell, gcID = gcID, fit.x = NA, fit.y = NA, parameters = list(A=NA, mu=NA, lambda=NA, integral=NA),
 					  model = NA, nls = NA, reliable=NULL, fitFlag=FALSE, control = control)
-		print("class(fitpara)   <- \"gcFitModel\"")
 		class(fitpara)   <- "gcFitModel"
-		print("fitpara.all[[i]] <- fitpara")
 		fitpara.all[[i]] <- fitpara
 	}
 	
-	print("Run gcFitSpline")
 	# /// Non parametric fit
 	if ((control$fit.opt=="s") || (control$fit.opt=="b")){
 		nonpara             <- gcFitSpline(acttime, actwell, gcID, control)
@@ -231,7 +219,6 @@ for (i in 1:dim(data)[1]){
 		fitnonpara.all[[i]] <- nonpara
 	}
 	
-	print("Run plotting")
 	
 	# /// plotting stuff
 	wellname <- paste(as.character(data[i,1]), as.character(data[i,2]),as.character(data[i,3]), sep="-")
@@ -275,7 +262,6 @@ for (i in 1:dim(data)[1]){
 
 	if (control$interactive==TRUE) graphics.off()
 
-	print("Run gcBootSpline")
 
 	# /// Beginn Bootstrap
 	if ((control$nboot.gc > 0) && (reliability_tag==TRUE)){
@@ -290,19 +276,16 @@ for (i in 1:dim(data)[1]){
 		boot.all[[i]] <- bt	
         }
 
-	print("Create output table")
 	# create output table
 	description     <- data.frame(TestId=data[i,1], AddId=data[i,2],concentration=data[i,3], reliability=reliability_tag, used.model=fitpara$model, log.x=control$log.x.gc, log.y=control$log.y.gc, nboot.gc=control$nboot.gc)
 
 	fitted          <- cbind(description, summary(fitpara), summary(nonpara), summary(bt))
 	
 	out.table       <- rbind(out.table, fitted)
-	print("End main loop iteration")
 
 } # /// of for (i in 1:dim(y)[1])
 
 gcFit           <- list(raw.time = time, raw.data = data, gcTable = out.table, gcFittedModels = fitpara.all, gcFittedSplines = fitnonpara.all, gcBootSplines = boot.all, control=control)
-print("End gcFit2")
 
 class(gcFit)    <- "gcFit"
 gcFit
@@ -350,7 +333,6 @@ methods[["GroCurveFit.fit_growth_curve"]] <- function(workspace_name, growth_mat
     values <- data[['values']]
     print("Making time matrix")
     timepoints <- numeric(timepoints_number)
-#    print (timepoints)
     metadata <- growth_matrix_obj[['metadata']]
     row_metadata <- metadata[['row_metadata']]
 
@@ -368,7 +350,7 @@ methods[["GroCurveFit.fit_growth_curve"]] <- function(workspace_name, growth_mat
 	}
 #    print(timepoints)
     time <- t(matrix(rep(timepoints, samples_number), c(timepoints_number, samples_number)))
-    print(time)
+#    print(time)
     
     print("Making data frame")
 #    print (values)
@@ -399,39 +381,13 @@ methods[["GroCurveFit.fit_growth_curve"]] <- function(workspace_name, growth_mat
    	    data[, i+3] = data_col_i
     	
 	}
-    print(data)
-    print("Write warn option")
-    print(options("warn"))
-    print(packageVersion("grofit"))
-    print(sessionInfo())
-
-	print("-------Time--------")
-	print(typeof(time))
-	print(class(time))
-#	print(sapply(time, class))
-#	print(sapply(time, attributes))
-	print(attributes(time))
-	print(names(time))
-	print (toJSON(time))
-	print("-------Data--------")
-	print(typeof(data))
-	print(class(data))
-#	print(sapply(data, class))
-#	print(sapply(data, attributes))
-	print(attributes(data))
-	print(names(data))
-	print (toJSON(data))
-	print("------Control-------")
-	grofit_control <- grofit.control(fit.opt="b",suppress.messages = FALSE, interactive = FALSE)
-	print (grofit_control)
-	print("-------------------")
-
+ #   print(data)
+	grofit_control <- grofit.control(fit.opt="b",suppress.messages = TRUE, interactive = FALSE)
     print("Running grofit")
-    print(sessionInfo(package="grofit"))
 
     result <- gcFit2(time,data, control=grofit_control)
     print ("grofit finished")
-	print(summary(result))
+#	print(summary(result))
 	print("Creating output object")
 	result_frame <- summary(result)
 	ret_data <- result_frame[,c("TestId","mu.model", "lambda.model", "A.model", "integral.model")]
@@ -444,7 +400,7 @@ methods[["GroCurveFit.fit_growth_curve"]] <- function(workspace_name, growth_mat
 	}
 	
 	colnames(ret_data) <- c("sample_id", "mu", "lambda", "a", "integral")
-	print(toJSON(ret_data))
+#	print(toJSON(ret_data))
 		
     return(list(growth_parameters=ret_data, provenance=provenance))
     #END fit_growth_curve
