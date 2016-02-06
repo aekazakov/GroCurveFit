@@ -55,14 +55,19 @@ for (i in 1:dim(data)[1]){
 
 	# /// Parametric fit
 	if ((control$fit.opt=="m") || (control$fit.opt=="b")){
+		print("fitpara          <- gcFitModel(acttime, actwell, gcID, control)")
 		fitpara          <- gcFitModel(acttime, actwell, gcID, control)
+		print("fitpara.all[[i]] <- fitpara")
 		fitpara.all[[i]] <- fitpara
 	}
 	else{
 	# /// generate empty object
+		print("fitpara          <- list(raw.x = acttime, raw.y = actwell, gcID = gcID, fit.x = NA, fit.y = NA, parameters = list(A=NA, mu=NA, lambda=NA, integral=NA), model = NA, nls = NA, reliable=NULL, fitFlag=FALSE, control = control)")
 		fitpara          <- list(raw.x = acttime, raw.y = actwell, gcID = gcID, fit.x = NA, fit.y = NA, parameters = list(A=NA, mu=NA, lambda=NA, integral=NA),
 					  model = NA, nls = NA, reliable=NULL, fitFlag=FALSE, control = control)
+		print("class(fitpara)   <- \"gcFitModel\"")
 		class(fitpara)   <- "gcFitModel"
+		print("fitpara.all[[i]] <- fitpara")
 		fitpara.all[[i]] <- fitpara
 	}
 	
