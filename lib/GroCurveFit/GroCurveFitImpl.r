@@ -144,6 +144,7 @@ y.model <- NULL
 		fitFlag      <- FALSE
 	}
 } # end of else if(length(y)<5)
+print("Create gcFitModel output")
 
 gcFitModel <- list(raw.time = time, raw.data = data, gcID = gcID, fit.time = time, fit.data = as.numeric(fitted.values(best)), parameters = list(A=Abest, mu=mubest, lambda=lambdabest, integral=Integralbest), model = used, nls = best, reliable=NULL, fitFlag=fitFlag, control = control)
 
