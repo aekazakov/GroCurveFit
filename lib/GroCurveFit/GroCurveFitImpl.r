@@ -136,7 +136,8 @@ y.model <- NULL
 		}
 	}
 	else{
-		warning("gcFitModel: Unable to fit this curve parametrically!")
+		#warning("gcFitModel: Unable to fit this curve parametrically!")
+		print("Here was warning: gcFitModel: Unable to fit this curve parametrically!")
 		Abest        <- c(NA,NA)
 		mubest       <- c(NA,NA)
 		lambdabest   <- c(NA,NA)
