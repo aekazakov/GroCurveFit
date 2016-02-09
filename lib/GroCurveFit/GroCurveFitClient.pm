@@ -27,7 +27,7 @@ GroCurveFit::GroCurveFitClient
 
 
 A KBase module: GroCurveFit
-This sample module contains one small method - filter_contigs.
+This module contains one small method - fit_growth_curve.
 
 
 =cut
@@ -110,9 +110,9 @@ sub new
 
 
 
-=head2 count_contigs
+=head2 fit_growth_curve
 
-  $return = $obj->count_contigs($workspace_name, $contigset_id)
+  $growth_parameters = $obj->fit_growth_curve($workspace_name, $growth_matrix_id)
 
 =over 4
 
@@ -122,12 +122,16 @@ sub new
 
 <pre>
 $workspace_name is a GroCurveFit.workspace_name
-$contigset_id is a GroCurveFit.contigset_id
-$return is a GroCurveFit.CountContigsResults
+$growth_matrix_id is a GroCurveFit.growth_matrix_id
+$growth_parameters is a reference to a list where each element is a GroCurveFit.GrowthCurveParameters
 workspace_name is a string
-contigset_id is a string
-CountContigsResults is a reference to a hash where the following keys are defined:
-	contig_count has a value which is an int
+growth_matrix_id is a string
+GrowthCurveParameters is a reference to a hash where the following keys are defined:
+	sample_id has a value which is a string
+	mu has a value which is a float
+	lambda has a value which is a float
+	a has a value which is a float
+	integral has a value which is a float
 
 </pre>
 
@@ -136,26 +140,30 @@ CountContigsResults is a reference to a hash where the following keys are define
 =begin text
 
 $workspace_name is a GroCurveFit.workspace_name
-$contigset_id is a GroCurveFit.contigset_id
-$return is a GroCurveFit.CountContigsResults
+$growth_matrix_id is a GroCurveFit.growth_matrix_id
+$growth_parameters is a reference to a list where each element is a GroCurveFit.GrowthCurveParameters
 workspace_name is a string
-contigset_id is a string
-CountContigsResults is a reference to a hash where the following keys are defined:
-	contig_count has a value which is an int
+growth_matrix_id is a string
+GrowthCurveParameters is a reference to a hash where the following keys are defined:
+	sample_id has a value which is a string
+	mu has a value which is a float
+	lambda has a value which is a float
+	a has a value which is a float
+	integral has a value which is a float
 
 
 =end text
 
 =item Description
 
-Count contigs in a ContigSet
+Returns growth curve parameters
 contigset_id - the ContigSet to count.
 
 =back
 
 =cut
 
- sub count_contigs
+ sub fit_growth_curve
 {
     my($self, @args) = @_;
 
@@ -164,39 +172,39 @@ contigset_id - the ContigSet to count.
     if ((my $n = @args) != 2)
     {
 	Bio::KBase::Exceptions::ArgumentValidationError->throw(error =>
-							       "Invalid argument count for function count_contigs (received $n, expecting 2)");
+							       "Invalid argument count for function fit_growth_curve (received $n, expecting 2)");
     }
     {
-	my($workspace_name, $contigset_id) = @args;
+	my($workspace_name, $growth_matrix_id) = @args;
 
 	my @_bad_arguments;
         (!ref($workspace_name)) or push(@_bad_arguments, "Invalid type for argument 1 \"workspace_name\" (value was \"$workspace_name\")");
-        (!ref($contigset_id)) or push(@_bad_arguments, "Invalid type for argument 2 \"contigset_id\" (value was \"$contigset_id\")");
+        (!ref($growth_matrix_id)) or push(@_bad_arguments, "Invalid type for argument 2 \"growth_matrix_id\" (value was \"$growth_matrix_id\")");
         if (@_bad_arguments) {
-	    my $msg = "Invalid arguments passed to count_contigs:\n" . join("", map { "\t$_\n" } @_bad_arguments);
+	    my $msg = "Invalid arguments passed to fit_growth_curve:\n" . join("", map { "\t$_\n" } @_bad_arguments);
 	    Bio::KBase::Exceptions::ArgumentValidationError->throw(error => $msg,
-								   method_name => 'count_contigs');
+								   method_name => 'fit_growth_curve');
 	}
     }
 
     my $result = $self->{client}->call($self->{url}, $self->{headers}, {
-	method => "GroCurveFit.count_contigs",
+	method => "GroCurveFit.fit_growth_curve",
 	params => \@args,
     });
     if ($result) {
 	if ($result->is_error) {
 	    Bio::KBase::Exceptions::JSONRPC->throw(error => $result->error_message,
 					       code => $result->content->{error}->{code},
-					       method_name => 'count_contigs',
+					       method_name => 'fit_growth_curve',
 					       data => $result->content->{error}->{error} # JSON::RPC::ReturnObject only supports JSONRPC 1.1 or 1.O
 					      );
 	} else {
 	    return wantarray ? @{$result->result} : $result->result->[0];
 	}
     } else {
-        Bio::KBase::Exceptions::HTTP->throw(error => "Error invoking method count_contigs",
+        Bio::KBase::Exceptions::HTTP->throw(error => "Error invoking method fit_growth_curve",
 					    status_line => $self->{client}->status_line,
-					    method_name => 'count_contigs',
+					    method_name => 'fit_growth_curve',
 				       );
     }
 }
@@ -214,16 +222,16 @@ sub version {
             Bio::KBase::Exceptions::JSONRPC->throw(
                 error => $result->error_message,
                 code => $result->content->{code},
-                method_name => 'count_contigs',
+                method_name => 'fit_growth_curve',
             );
         } else {
             return wantarray ? @{$result->result} : $result->result->[0];
         }
     } else {
         Bio::KBase::Exceptions::HTTP->throw(
-            error => "Error invoking method count_contigs",
+            error => "Error invoking method fit_growth_curve",
             status_line => $self->{client}->status_line,
-            method_name => 'count_contigs',
+            method_name => 'fit_growth_curve',
         );
     }
 }
@@ -260,7 +268,7 @@ sub _validate_version {
 
 
 
-=head2 contigset_id
+=head2 growth_matrix_id
 
 =over 4
 
@@ -268,7 +276,7 @@ sub _validate_version {
 
 =item Description
 
-A string representing a ContigSet id.
+A string representing a GrowthMatrix id.
 
 
 =item Definition
@@ -322,7 +330,7 @@ a string
 
 
 
-=head2 CountContigsResults
+=head2 GrowthCurveParameters
 
 =over 4
 
@@ -334,7 +342,11 @@ a string
 
 <pre>
 a reference to a hash where the following keys are defined:
-contig_count has a value which is an int
+sample_id has a value which is a string
+mu has a value which is a float
+lambda has a value which is a float
+a has a value which is a float
+integral has a value which is a float
 
 </pre>
 
@@ -343,7 +355,11 @@ contig_count has a value which is an int
 =begin text
 
 a reference to a hash where the following keys are defined:
-contig_count has a value which is an int
+sample_id has a value which is a string
+mu has a value which is a float
+lambda has a value which is a float
+a has a value which is a float
+integral has a value which is a float
 
 
 =end text

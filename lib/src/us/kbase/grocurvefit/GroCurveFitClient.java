@@ -16,7 +16,7 @@ import us.kbase.common.service.UnauthorizedException;
  * <p>Original spec-file module name: GroCurveFit</p>
  * <pre>
  * A KBase module: GroCurveFit
- * This sample module contains one small method - filter_contigs.
+ * This module contains one small method - fit_growth_curve.
  * </pre>
  */
 public class GroCurveFitClient {
@@ -140,23 +140,23 @@ public class GroCurveFitClient {
     }
 
     /**
-     * <p>Original spec-file function name: count_contigs</p>
+     * <p>Original spec-file function name: fit_growth_curve</p>
      * <pre>
-     * Count contigs in a ContigSet
+     * Returns growth curve parameters
      * contigset_id - the ContigSet to count.
      * </pre>
      * @param   arg1   instance of original type "workspace_name" (A string representing a workspace name.)
-     * @param   arg2   instance of original type "contigset_id" (A string representing a ContigSet id.)
-     * @return   instance of type {@link us.kbase.grocurvefit.CountContigsResults CountContigsResults}
+     * @param   arg2   instance of original type "growth_matrix_id" (A string representing a GrowthMatrix id.)
+     * @return   parameter "growth_parameters" of list of type {@link us.kbase.grocurvefit.GrowthCurveParameters GrowthCurveParameters}
      * @throws IOException if an IO exception occurs
      * @throws JsonClientException if a JSON RPC exception occurs
      */
-    public CountContigsResults countContigs(String arg1, String arg2, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
+    public List<GrowthCurveParameters> fitGrowthCurve(String arg1, String arg2, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
         List<Object> args = new ArrayList<Object>();
         args.add(arg1);
         args.add(arg2);
-        TypeReference<List<CountContigsResults>> retType = new TypeReference<List<CountContigsResults>>() {};
-        List<CountContigsResults> res = caller.jsonrpcCall("GroCurveFit.count_contigs", args, retType, true, true, jsonRpcContext);
+        TypeReference<List<List<GrowthCurveParameters>>> retType = new TypeReference<List<List<GrowthCurveParameters>>>() {};
+        List<List<GrowthCurveParameters>> res = caller.jsonrpcCall("GroCurveFit.fit_growth_curve", args, retType, true, true, jsonRpcContext);
         return res.get(0);
     }
 }

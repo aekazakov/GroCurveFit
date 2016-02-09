@@ -41,13 +41,6 @@ GroCurveFitClient <- function(url, token = NULL, flatten = TRUE,
         return(parsed[['result']])
     }
 
-    ret_client_object_ref[['count_contigs']] <- function(workspace_name, contigset_id) {
-        ret <- ret_client_object_ref[['json_rpc_call']]("GroCurveFit.count_contigs", list(
-                workspace_name, contigset_id
-        ))
-        return(ret[[1]])
-    }
-
     ret_client_object_ref[['fit_growth_curve']] <- function(workspace_name, growth_matrix_id) {
         ret <- ret_client_object_ref[['json_rpc_call']]("GroCurveFit.fit_growth_curve", list(
                 workspace_name, growth_matrix_id

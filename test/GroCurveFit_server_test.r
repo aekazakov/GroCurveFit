@@ -72,22 +72,20 @@ test_cleanup <- function() {
 
 source("./lib/GroCurveFit/GroCurveFitImpl.r")
 tryCatch({
-    obj_name <- "contigset.1"
-    contig = list(id=unbox('1'), length=unbox(10), md5=unbox('md5'), sequence=unbox('agcttttcat'))
-    obj = list(contigs=list(contig), id=unbox('id'), md5=unbox('md5'), name=unbox('name'), source=unbox('source'),
-            source_id=unbox('source_id'), type=unbox('type'))
-    get_test_ws_client()[['save_objects']](list(workspace=unbox(get_test_ws_name()), objects=list(list(
-            type=unbox('KBaseGenomes.ContigSet'), name=unbox(obj_name), data=obj))))
-    ret <- methods$GroCurveFit.count_contigs(get_test_ws_name(), obj_name, get_test_context())
-    print("Test contig_count")
-    print(toJSON(ret))
-    contig_count <- ret[['contig_count']]
-    expect_equal(as.numeric(contig_count), 1)
-
+#    obj_name <- "contigset.1"
+#    contig = list(id=unbox('1'), length=unbox(10), md5=unbox('md5'), sequence=unbox('agcttttcat'))
+#    obj = list(contigs=list(contig), id=unbox('id'), md5=unbox('md5'), name=unbox('name'), source=unbox('source'),
+#            source_id=unbox('source_id'), type=unbox('type'))
+#    get_test_ws_client()[['save_objects']](list(workspace=unbox(get_test_ws_name()), objects=list(list(
+#            type=unbox('KBaseGenomes.ContigSet'), name=unbox(obj_name), data=obj))))
+#    ret <- methods$GroCurveFit.count_contigs(get_test_ws_name(), obj_name, get_test_context())
+#    contig_count <- ret[['contig_count']]
+#    expect_equal(as.numeric(contig_count), 1)
+#    
     print("Test fit_growth_curve")
-    obj_name <- "growth-test-20160205-01"
+    obj_real_name <- "growth-test-20160205-01"
     ws_real_name <- "aktest:1454614449601"
-    ret <- methods$GroCurveFit.fit_growth_curve(ws_real_name, obj_name, get_test_context())
+    ret <- methods$GroCurveFit.fit_growth_curve(ws_real_name, obj_real_name, get_test_context())
     #print(toJSON(ret))
     lag_phase <- ret[['growth_parameters']][['lambda']][3]
     expect_equal(as.numeric(lag_phase), -3.87354817503698)

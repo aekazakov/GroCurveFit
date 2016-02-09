@@ -11,8 +11,6 @@ RUN R -q -e 'if(!require(jsonlite)) install.packages("jsonlite", repos="http://c
 RUN R -q -e 'if(!require(httr)) install.packages("httr", repos="http://cran.us.r-project.org")'
 RUN R -q -e 'if(!require(raster)) install.packages("raster", repos="http://cran.us.r-project.org")'
 RUN R -q -e 'if(!require(grofit)) install.packages("grofit", repos="http://cran.us.r-project.org")'
-RUN R -q -e 'if(!require(stringr)) install.packages("stringr", repos="http://cran.us.r-project.org")'
-RUN R -q -e 'if(!require(evaluate)) install.packages("evaluate", repos="http://cran.us.r-project.org")'
 RUN apt-get -y install r-cran-evaluate r-cran-codetools r-cran-testthat
 
 # -----------------------------------------
