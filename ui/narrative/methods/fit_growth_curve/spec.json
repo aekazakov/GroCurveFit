@@ -21,6 +21,18 @@
 			"text_options": {
 				"valid_ws_types": [ "KBaseEnigmaMetals.GrowthMatrix" ]
 			}
+		},
+		{
+			"id": "parameters_obj_name",
+			"optional": false,
+			"advanced": false,
+			"allow_multiple": false,
+			"default_values": [ "" ],
+			"field_type": "text",
+			"text_options": {
+				"valid_ws_types": [ "KBaseEnigmaMetals.GrowthMatrixParameters" ],
+				"is_output_name": true
+			}
 		}
 	],
 	"behavior": {
@@ -36,6 +48,10 @@
 				{
 					"input_parameter": "growth_matrix_id",
 					"target_argument_position": 1
+				},
+				{
+					"input_parameter": "parameters_obj_name",
+					"target_argument_position": 2
 				}
 			],
 			"output_mapping": [

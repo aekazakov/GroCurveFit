@@ -15,19 +15,37 @@ module GroCurveFit {
     */
     typedef string workspace_name;
     
-    typedef structure {
-    	string sample_id;
-    	float mu;
-        float lambda;
-        float a;
-        float integral;
-    } GrowthCurveParameters;
+    /*
+	A string representing final object name
+    */
+    typedef string parameters_obj_name;
+
+    /* 
+	Parameters of a single growth curve
+    */
+
+	typedef structure{
+    	string mtx_column_id;
+    	string growth_rate;
+        string lag_phase;
+        string max_growth;
+        string area_under_curve;
+	} GrowthCurveParameters;
+
+    /* 
+	Parameters of all growth curves for a GrowthMatrix
+    */
+
+	typedef structure{
+    	string matrix_id;
+    	list <GrowthCurveParameters> parameters;
+	} GrowthMatrixParameters;
 
     
     /*
-        Returns growth curve parameters
-        contigset_id - the ContigSet to count.
+        Returns growth matrix parameters
+        growth_matrix_id - the GrowthMatrix to fit.
     */
 
-    funcdef fit_growth_curve(workspace_name,growth_matrix_id) returns (list <GrowthCurveParameters> growth_parameters) authentication required;
+    funcdef fit_growth_curve(workspace_name,growth_matrix_id,parameters_obj_name) returns (string output_object) authentication required;
 };

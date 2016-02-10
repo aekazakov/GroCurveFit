@@ -171,10 +171,10 @@ class GroCurveFit(object):
             raise ServerError('Unknown', 0, 'An unknown server error occurred')
         return resp['result']
  
-    def fit_growth_curve(self, workspace_name, growth_matrix_id, json_rpc_context = None):
+    def fit_growth_curve(self, workspace_name, growth_matrix_id, parameters_obj_name, json_rpc_context = None):
         if json_rpc_context and type(json_rpc_context) is not dict:
             raise ValueError('Method fit_growth_curve: argument json_rpc_context is not type dict as required.')
         resp = self._call('GroCurveFit.fit_growth_curve',
-                          [workspace_name, growth_matrix_id], json_rpc_context)
+                          [workspace_name, growth_matrix_id, parameters_obj_name], json_rpc_context)
         return resp[0]
  

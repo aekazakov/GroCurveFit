@@ -41,9 +41,9 @@ GroCurveFitClient <- function(url, token = NULL, flatten = TRUE,
         return(parsed[['result']])
     }
 
-    ret_client_object_ref[['fit_growth_curve']] <- function(workspace_name, growth_matrix_id) {
+    ret_client_object_ref[['fit_growth_curve']] <- function(workspace_name, growth_matrix_id, parameters_obj_name) {
         ret <- ret_client_object_ref[['json_rpc_call']]("GroCurveFit.fit_growth_curve", list(
-                workspace_name, growth_matrix_id
+                workspace_name, growth_matrix_id, parameters_obj_name
         ))
         return(ret[[1]])
     }

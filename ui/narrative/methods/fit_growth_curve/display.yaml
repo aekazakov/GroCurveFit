@@ -37,5 +37,13 @@ parameters :
         long-hint  : |
             The growth matrix for which you want to fit growth curves.
 
+    parameters_obj_name :
+        ui-name : |
+            Name of output data object
+        short-hint : |
+            Name of the output CrowthMatrixParameters object
+        long-hint  : |
+            Enter name for the output GrowthMatrixParameters object. Spaces are not allowed.
+
 description : |
 	<p>This method estimates four growth parameters for all samples in a growth matrix: maximum slope of growth curve, length of lag phase, maximal cell growth and integral (area under the growth curve).</p>

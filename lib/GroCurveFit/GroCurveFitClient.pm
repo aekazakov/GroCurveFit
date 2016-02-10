@@ -112,7 +112,7 @@ sub new
 
 =head2 fit_growth_curve
 
-  $growth_parameters = $obj->fit_growth_curve($workspace_name, $growth_matrix_id)
+  $output_object = $obj->fit_growth_curve($workspace_name, $growth_matrix_id, $parameters_obj_name)
 
 =over 4
 
@@ -123,15 +123,11 @@ sub new
 <pre>
 $workspace_name is a GroCurveFit.workspace_name
 $growth_matrix_id is a GroCurveFit.growth_matrix_id
-$growth_parameters is a reference to a list where each element is a GroCurveFit.GrowthCurveParameters
+$parameters_obj_name is a GroCurveFit.parameters_obj_name
+$output_object is a string
 workspace_name is a string
 growth_matrix_id is a string
-GrowthCurveParameters is a reference to a hash where the following keys are defined:
-	sample_id has a value which is a string
-	mu has a value which is a float
-	lambda has a value which is a float
-	a has a value which is a float
-	integral has a value which is a float
+parameters_obj_name is a string
 
 </pre>
 
@@ -141,23 +137,19 @@ GrowthCurveParameters is a reference to a hash where the following keys are defi
 
 $workspace_name is a GroCurveFit.workspace_name
 $growth_matrix_id is a GroCurveFit.growth_matrix_id
-$growth_parameters is a reference to a list where each element is a GroCurveFit.GrowthCurveParameters
+$parameters_obj_name is a GroCurveFit.parameters_obj_name
+$output_object is a string
 workspace_name is a string
 growth_matrix_id is a string
-GrowthCurveParameters is a reference to a hash where the following keys are defined:
-	sample_id has a value which is a string
-	mu has a value which is a float
-	lambda has a value which is a float
-	a has a value which is a float
-	integral has a value which is a float
+parameters_obj_name is a string
 
 
 =end text
 
 =item Description
 
-Returns growth curve parameters
-contigset_id - the ContigSet to count.
+Returns growth matrix parameters
+growth_matrix_id - the GrowthMatrix to fit.
 
 =back
 
@@ -169,17 +161,18 @@ contigset_id - the ContigSet to count.
 
 # Authentication: required
 
-    if ((my $n = @args) != 2)
+    if ((my $n = @args) != 3)
     {
 	Bio::KBase::Exceptions::ArgumentValidationError->throw(error =>
-							       "Invalid argument count for function fit_growth_curve (received $n, expecting 2)");
+							       "Invalid argument count for function fit_growth_curve (received $n, expecting 3)");
     }
     {
-	my($workspace_name, $growth_matrix_id) = @args;
+	my($workspace_name, $growth_matrix_id, $parameters_obj_name) = @args;
 
 	my @_bad_arguments;
         (!ref($workspace_name)) or push(@_bad_arguments, "Invalid type for argument 1 \"workspace_name\" (value was \"$workspace_name\")");
         (!ref($growth_matrix_id)) or push(@_bad_arguments, "Invalid type for argument 2 \"growth_matrix_id\" (value was \"$growth_matrix_id\")");
+        (!ref($parameters_obj_name)) or push(@_bad_arguments, "Invalid type for argument 3 \"parameters_obj_name\" (value was \"$parameters_obj_name\")");
         if (@_bad_arguments) {
 	    my $msg = "Invalid arguments passed to fit_growth_curve:\n" . join("", map { "\t$_\n" } @_bad_arguments);
 	    Bio::KBase::Exceptions::ArgumentValidationError->throw(error => $msg,
@@ -330,10 +323,46 @@ a string
 
 
 
+=head2 parameters_obj_name
+
+=over 4
+
+
+
+=item Description
+
+A string representing final object name
+
+
+=item Definition
+
+=begin html
+
+<pre>
+a string
+</pre>
+
+=end html
+
+=begin text
+
+a string
+
+=end text
+
+=back
+
+
+
 =head2 GrowthCurveParameters
 
 =over 4
 
+
+
+=item Description
+
+Parameters of a single growth curve
 
 
 =item Definition
@@ -342,11 +371,11 @@ a string
 
 <pre>
 a reference to a hash where the following keys are defined:
-sample_id has a value which is a string
-mu has a value which is a float
-lambda has a value which is a float
-a has a value which is a float
-integral has a value which is a float
+mtx_column_id has a value which is a string
+growth_rate has a value which is a string
+lag_phase has a value which is a string
+max_growth has a value which is a string
+area_under_curve has a value which is a string
 
 </pre>
 
@@ -355,11 +384,48 @@ integral has a value which is a float
 =begin text
 
 a reference to a hash where the following keys are defined:
-sample_id has a value which is a string
-mu has a value which is a float
-lambda has a value which is a float
-a has a value which is a float
-integral has a value which is a float
+mtx_column_id has a value which is a string
+growth_rate has a value which is a string
+lag_phase has a value which is a string
+max_growth has a value which is a string
+area_under_curve has a value which is a string
+
+
+=end text
+
+=back
+
+
+
+=head2 GrowthMatrixParameters
+
+=over 4
+
+
+
+=item Description
+
+Parameters of all growth curves for a GrowthMatrix
+
+
+=item Definition
+
+=begin html
+
+<pre>
+a reference to a hash where the following keys are defined:
+matrix_id has a value which is a string
+parameters has a value which is a reference to a list where each element is a GroCurveFit.GrowthCurveParameters
+
+</pre>
+
+=end html
+
+=begin text
+
+a reference to a hash where the following keys are defined:
+matrix_id has a value which is a string
+parameters has a value which is a reference to a list where each element is a GroCurveFit.GrowthCurveParameters
 
 
 =end text

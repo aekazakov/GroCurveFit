@@ -82,13 +82,15 @@ tryCatch({
 #    contig_count <- ret[['contig_count']]
 #    expect_equal(as.numeric(contig_count), 1)
 #    
-    print("Test fit_growth_curve")
+    print("Testing fit_growth_curve")
     obj_real_name <- "growth-test-20160205-01"
     ws_real_name <- "aktest:1454614449601"
-    ret <- methods$GroCurveFit.fit_growth_curve(ws_real_name, obj_real_name, get_test_context())
-    #print(toJSON(ret))
-    lag_phase <- ret[['growth_parameters']][['lambda']][3]
-    expect_equal(as.numeric(lag_phase), -3.87354817503698)
+    test_obj_name <- "growth-test-parameters-20160210-01"
+    ret <- methods$GroCurveFit.fit_growth_curve(ws_real_name, obj_real_name, test_obj_name, get_test_context())
+#    print(toJSON(ret))
+    ret_object_name <- ret[['output_object']][[1]]
+#    print(toJSON(ret_object_name))
+    expect_equal(ret_object_name, test_obj_name)
 
 }, finally = {
     test_cleanup()
