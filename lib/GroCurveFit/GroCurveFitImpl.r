@@ -32,24 +32,24 @@ methods[["GroCurveFit.fit_growth_curve"]] <- function(workspace_name, growth_mat
     row_metadata <- metadata[['row_metadata']]
     matrix_metadata <- metadata[['matrix_metadata']]
 
-# get type of values 
+# find type of values 
 	matrix_type <- 'RawValues'
 	for (entry_num in 1:length(matrix_metadata)){
 		if ((matrix_metadata[[entry_num]][["category"]] == "Measurement") && (matrix_metadata[[entry_num]][["property_value"]] == "StatValues")) {
 			matrix_type = "StatValues"
 		}
 	}
-	print (matrix_type)	
 
 # make list of column indices with growth data
 	samples_indices <- numeric()
 	if (matrix_type == "StatValues") {
+		col_metadata <- metadata[['column_metadata']]
 		for (col_num in 1:length(col_ids)) {		
-			col_name <- row_ids[[col_num]][[1]]
+			col_name <- col_ids[[col_num]][[1]]
 			col_md_entries <- col_metadata[[col_name]]
 			for (col_md_pos in 1:length(col_md_entries)) {
-				col_entry <- col_md_entries[[col_md_pos]]
-				if ((md_entry[["category"]] == "Measurement") && (md_entry[["property_name"]] == "ValueType") && (md_entry[["property_value"]] == "ValueType")) {
+				col_md_entry <- col_md_entries[[col_md_pos]]
+				if ((col_md_entry[["category"]] == "Measurement") && (col_md_entry[["property_name"]] == "ValueType") && (col_md_entry[["property_value"]] == "Average")) {					
 					samples_indices <- c (samples_indices, col_num)
 				}
 			}
@@ -70,19 +70,15 @@ methods[["GroCurveFit.fit_growth_curve"]] <- function(workspace_name, growth_mat
 			}
 		}
 	}
-    print(timepoints)
     time <- t(matrix(rep(timepoints, samples_number), c(timepoints_number, samples_number)))
-    print(time)
     
     print("Making data frame")
-#    print (values)
     values_t = do.call(cbind, values)
-#    print (values_t)
 
     data = as.data.frame(matrix(ncol=timepoints_number+3, nrow=samples_number))
     
     for (i in 1:samples_number) {
-    	data[i,1] <- col_ids[i][[1]]
+    	data[i,1] <- col_ids[samples_indices[i]][[1]]
     }
 
 	description = "No description"
@@ -98,18 +94,16 @@ methods[["GroCurveFit.fit_growth_curve"]] <- function(workspace_name, growth_mat
     for (i in 1: timepoints_number){
 		data_col_i <- numeric(samples_number)
     	for (j in 1:samples_number) {
-    		data_col_i[j] <- as.numeric(values_t[j,i])
+    		data_col_i[j] <- as.numeric(values_t[samples_indices[j],i])
     	}
    	    data[, i+3] = data_col_i
     	
 	}
-   print(data)
-	grofit_control <- grofit.control(fit.opt="b",suppress.messages = TRUE, interactive = FALSE)
+ 	grofit_control <- grofit.control(fit.opt="b",suppress.messages = TRUE, interactive = FALSE)
     print("Running grofit")
 
     result <- gcFit(time,data, control=grofit_control)
     print ("grofit finished")
-#	print(summary(result))
 	print("Creating output object")
 	result_frame <- summary(result)
 	ret_data <- result_frame[,c("TestId","mu.model", "lambda.model", "A.model", "integral.model")]
@@ -124,7 +118,7 @@ methods[["GroCurveFit.fit_growth_curve"]] <- function(workspace_name, growth_mat
 	colnames(ret_data) <- c("mtx_column_id", "growth_rate", "lag_phase", "max_growth", "area_under_curve")
 	output_obj = list(matrix_id = unbox(growth_matrix_id), parameters = ret_data)
 
-	print(toJSON(output_obj))
+#	print(toJSON(output_obj))
 	
 	ws_output <- ws_client$save_objects(list(workspace=unbox(workspace_name), objects=list(list(
             type=unbox('KBaseEnigmaMetals.GrowthMatrixParameters'), name=unbox(parameters_obj_name), data=output_obj))))

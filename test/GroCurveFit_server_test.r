@@ -83,9 +83,10 @@ tryCatch({
 #    expect_equal(as.numeric(contig_count), 1)
 #    
     print("Testing fit_growth_curve")
-    obj_real_name <- "growth-test-20160205-01"
+#    obj_real_name <- "growth-test-20160205-01"
+	obj_real_name <- "growth-statseries-20160211-1"
     ws_real_name <- "aktest:1454614449601"
-    test_obj_name <- "growth-test-parameters-20160210-01"
+    test_obj_name <- "growth-test-parameters-20160211-01"
     ret <- methods$GroCurveFit.fit_growth_curve(ws_real_name, obj_real_name, test_obj_name, get_test_context())
 #    print(toJSON(ret))
     ret_object_name <- ret[['output_object']][[1]]
