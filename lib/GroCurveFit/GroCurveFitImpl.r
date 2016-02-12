@@ -295,7 +295,7 @@ gcFit
 } # /// end of function
 #END_CONSTRUCTOR
 
-methods[["GroCurveFit.fit_growth_curve"]] <- function(workspace_name, growth_matrix_id, parameters_obj_name, context) {
+methods[["GroCurveFit.fit_growth_curve"]] <- function(workspace_name, growth_matrix_id, parameters_obj_name, fit_method, context) {
     #BEGIN fit_growth_curve
     token <- context[['token']]
     provenance <- context[['provenance']]
@@ -321,7 +321,7 @@ methods[["GroCurveFit.fit_growth_curve"]] <- function(workspace_name, growth_mat
 	matrix_type <- 'RawValues'
 	for (entry_num in 1:length(matrix_metadata)){
 		if ((matrix_metadata[[entry_num]][["category"]] == "Measurement") && (matrix_metadata[[entry_num]][["property_value"]] == "StatValues")) {
-			matrix_type = "StatValues"
+			matrix_type <- "StatValues"
 		}
 	}
 
@@ -356,7 +356,9 @@ methods[["GroCurveFit.fit_growth_curve"]] <- function(workspace_name, growth_mat
 		}
 	}
     time <- t(matrix(rep(timepoints, samples_number), c(timepoints_number, samples_number)))
-    
+
+#	print(time)
+	    
     print("Making data frame")
     values_t = do.call(cbind, values)
 
@@ -366,12 +368,12 @@ methods[["GroCurveFit.fit_growth_curve"]] <- function(workspace_name, growth_mat
     	data[i,1] <- col_ids[samples_indices[i]][[1]]
     }
 
-	description = "No description"
+	description <- "No description"
     for (i in 1:samples_number) {
     	data[i,2] <- description
     }
 
-	concentration = 0    
+	concentration <- 0    
     for (i in 1:samples_number) {
     	data[i,3] <- concentration
     }
@@ -381,34 +383,63 @@ methods[["GroCurveFit.fit_growth_curve"]] <- function(workspace_name, growth_mat
     	for (j in 1:samples_number) {
     		data_col_i[j] <- as.numeric(values_t[samples_indices[j],i])
     	}
-   	    data[, i+3] = data_col_i
+   	    data[, i+3] <- data_col_i
     	
 	}
- 	grofit_control <- grofit.control(fit.opt="b",suppress.messages = TRUE, interactive = FALSE)
+	
+#	print(data)
+	
+ 	grofit_control <- grofit.control(fit.opt = fit_method,suppress.messages = TRUE, interactive = FALSE)
     print("Running grofit")
 
     result <- gcFit2(time,data, control=grofit_control)
     print ("grofit finished")
 	print("Creating output object")
 	result_frame <- summary(result)
-	ret_data <- result_frame[,c("TestId","mu.model", "lambda.model", "A.model", "integral.model")]
+	
+#	print(result_frame)
+	
+	# use 9 columns from result_frame: "used.model", "mu.model", "lambda.model", "A.model", "integral.model", "mu.spline", "lambda.spline", "A.spline", "integral.spline"
 
+	ret_data <- as.data.frame(matrix(ncol=6, nrow=samples_number))
+	
+	colnames(ret_data) <- c("mtx_column_id", "method", "growth_rate", "lag_phase", "max_growth", "area_under_curve")
+	
 	for (i in 1:samples_number) {
-		if (is.na(ret_data[i,"mu.model"])) ret_data[i,"mu.model"] <- "NA"
-		if (is.na(ret_data[i,"lambda.model"])) ret_data[i,"lambda.model"] <- "NA"
-		if (is.na(ret_data[i,"A.model"])) ret_data[i,"A.model"] <- "NA"
-		if (is.na(ret_data[i,"integral.model"])) ret_data[i,"integral.model"] <- "NA"
+		ret_data[i,"mtx_column_id"] <- col_ids[samples_indices[i]][[1]]
+		if (is.na(result_frame[i,"mu.model"])|| is.na(result_frame[i,"lambda.model"]) || is.na(result_frame[i,"A.model"]) || is.na(result_frame[i,"integral.model"])) {
+			if (is.na(result_frame[i,"mu.spline"])|| is.na(result_frame[i,"lambda.spline"]) || is.na(result_frame[i,"A.spline"]) || is.na(result_frame[i,"integral.spline"])) {
+				ret_data[i,"method"] <- "NA"
+				ret_data[i,"growth_rate"] <- 0.0
+				ret_data[i,"lag_phase"] <- 0.0
+				ret_data[i,"max_growth"] <- 0.0
+				ret_data[i,"area_under_curve"] <- 0.0
+			} else {
+				ret_data[i,"method"] <- "spline"
+				ret_data[i,"growth_rate"] <- as.numeric(result_frame[i, "mu.spline"])
+				ret_data[i,"lag_phase"] <- as.numeric(result_frame[i, "lambda.spline"])
+				ret_data[i,"max_growth"] <- as.numeric(result_frame[i, "A.spline"])
+				ret_data[i,"area_under_curve"] <- as.numeric(result_frame[i, "integral.spline"])
+			} 
+		} else {
+			ret_data[i,"method"] <- paste (result_frame[i, "used.model"], "model", sep = " ", collapse = NULL)
+			ret_data[i,"growth_rate"] <- as.numeric(result_frame[i, "mu.model"])
+			ret_data[i,"lag_phase"] <- as.numeric(result_frame[i, "lambda.model"])
+			ret_data[i,"max_growth"] <- as.numeric(result_frame[i, "A.model"])
+			ret_data[i,"area_under_curve"] <- as.numeric(result_frame[i, "integral.model"])
+		}		
 	}
 	
-	colnames(ret_data) <- c("mtx_column_id", "growth_rate", "lag_phase", "max_growth", "area_under_curve")
-	output_obj = list(matrix_id = unbox(growth_matrix_id), parameters = ret_data)
+	
+	output_obj <- list(matrix_id = unbox(growth_matrix_id), parameters = ret_data)
 
-#	print(toJSON(output_obj))
+	print(toJSON(output_obj))
+	print("Saving output object to workspace")
 	
 	ws_output <- ws_client$save_objects(list(workspace=unbox(workspace_name), objects=list(list(
-            type=unbox('KBaseEnigmaMetals.GrowthMatrixParameters'), name=unbox(parameters_obj_name), data=output_obj))))
+            type=unbox('KBaseEnigmaMetals.GrowthParameters'), name=unbox(parameters_obj_name), data=output_obj))))
 
-	print(toJSON(ws_output))
+#	print(toJSON(ws_output))
 	
 	ret <- unbox(ws_output[[1]][[2]])
 		

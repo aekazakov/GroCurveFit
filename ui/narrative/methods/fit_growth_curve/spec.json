@@ -30,8 +30,32 @@
 			"default_values": [ "" ],
 			"field_type": "text",
 			"text_options": {
-				"valid_ws_types": [ "KBaseEnigmaMetals.GrowthMatrixParameters" ],
+				"valid_ws_types": [  ],
 				"is_output_name": true
+			}
+		},
+		{
+		    "id" : "fit_method",
+		    "optional" : false,
+		    "advanced" : false,
+		    "allow_multiple" : false,
+		    "default_values" : [ "b" ],
+		    "field_type" : "dropdown",
+		    "dropdown_options":{
+		      "options": [
+		        {
+		          "value": "b",
+		          "display": "Perform model, then spline fit (returns the first successful result)"
+		        },
+		        {
+		          "value": "m",
+		          "display": "Perform only model fit"
+		        },
+		        {
+		          "value": "s",
+		          "display": "Perform only spline fit"
+		        }
+		      ]
 			}
 		}
 	],
@@ -52,6 +76,10 @@
 				{
 					"input_parameter": "parameters_obj_name",
 					"target_argument_position": 2
+				},
+				{
+					"input_parameter": "fit_method",
+					"target_argument_position": 3
 				}
 			],
 			"output_mapping": [

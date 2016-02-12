@@ -148,15 +148,17 @@ public class GroCurveFitClient {
      * @param   arg1   instance of original type "workspace_name" (A string representing a workspace name.)
      * @param   arg2   instance of original type "growth_matrix_id" (A string representing a GrowthMatrix id.)
      * @param   arg3   instance of original type "parameters_obj_name" (A string representing final object name)
+     * @param   fitMethod   instance of String
      * @return   parameter "output_object" of String
      * @throws IOException if an IO exception occurs
      * @throws JsonClientException if a JSON RPC exception occurs
      */
-    public String fitGrowthCurve(String arg1, String arg2, String arg3, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
+    public String fitGrowthCurve(String arg1, String arg2, String arg3, String fitMethod, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
         List<Object> args = new ArrayList<Object>();
         args.add(arg1);
         args.add(arg2);
         args.add(arg3);
+        args.add(fitMethod);
         TypeReference<List<String>> retType = new TypeReference<List<String>>() {};
         List<String> res = caller.jsonrpcCall("GroCurveFit.fit_growth_curve", args, retType, true, true, jsonRpcContext);
         return res.get(0);

@@ -4,6 +4,7 @@ This module contains one small method - fit_growth_curve.
 */
 
 module GroCurveFit {
+
     /*
         A string representing a GrowthMatrix id.
     */
@@ -26,10 +27,11 @@ module GroCurveFit {
 
 	typedef structure{
     	string mtx_column_id;
-    	string growth_rate;
-        string lag_phase;
-        string max_growth;
-        string area_under_curve;
+		string method;
+    	float growth_rate;
+        float lag_phase;
+        float max_growth;
+        float area_under_curve;
 	} GrowthCurveParameters;
 
     /* 
@@ -39,7 +41,7 @@ module GroCurveFit {
 	typedef structure{
     	string matrix_id;
     	list <GrowthCurveParameters> parameters;
-	} GrowthMatrixParameters;
+	} GrowthParameters;
 
     
     /*
@@ -47,5 +49,5 @@ module GroCurveFit {
         growth_matrix_id - the GrowthMatrix to fit.
     */
 
-    funcdef fit_growth_curve(workspace_name,growth_matrix_id,parameters_obj_name) returns (string output_object) authentication required;
+    funcdef fit_growth_curve(workspace_name,growth_matrix_id,parameters_obj_name,string fit_method) returns (string output_object) authentication required;
 };

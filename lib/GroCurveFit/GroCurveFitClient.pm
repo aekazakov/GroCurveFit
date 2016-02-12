@@ -112,7 +112,7 @@ sub new
 
 =head2 fit_growth_curve
 
-  $output_object = $obj->fit_growth_curve($workspace_name, $growth_matrix_id, $parameters_obj_name)
+  $output_object = $obj->fit_growth_curve($workspace_name, $growth_matrix_id, $parameters_obj_name, $fit_method)
 
 =over 4
 
@@ -124,6 +124,7 @@ sub new
 $workspace_name is a GroCurveFit.workspace_name
 $growth_matrix_id is a GroCurveFit.growth_matrix_id
 $parameters_obj_name is a GroCurveFit.parameters_obj_name
+$fit_method is a string
 $output_object is a string
 workspace_name is a string
 growth_matrix_id is a string
@@ -138,6 +139,7 @@ parameters_obj_name is a string
 $workspace_name is a GroCurveFit.workspace_name
 $growth_matrix_id is a GroCurveFit.growth_matrix_id
 $parameters_obj_name is a GroCurveFit.parameters_obj_name
+$fit_method is a string
 $output_object is a string
 workspace_name is a string
 growth_matrix_id is a string
@@ -161,18 +163,19 @@ growth_matrix_id - the GrowthMatrix to fit.
 
 # Authentication: required
 
-    if ((my $n = @args) != 3)
+    if ((my $n = @args) != 4)
     {
 	Bio::KBase::Exceptions::ArgumentValidationError->throw(error =>
-							       "Invalid argument count for function fit_growth_curve (received $n, expecting 3)");
+							       "Invalid argument count for function fit_growth_curve (received $n, expecting 4)");
     }
     {
-	my($workspace_name, $growth_matrix_id, $parameters_obj_name) = @args;
+	my($workspace_name, $growth_matrix_id, $parameters_obj_name, $fit_method) = @args;
 
 	my @_bad_arguments;
         (!ref($workspace_name)) or push(@_bad_arguments, "Invalid type for argument 1 \"workspace_name\" (value was \"$workspace_name\")");
         (!ref($growth_matrix_id)) or push(@_bad_arguments, "Invalid type for argument 2 \"growth_matrix_id\" (value was \"$growth_matrix_id\")");
         (!ref($parameters_obj_name)) or push(@_bad_arguments, "Invalid type for argument 3 \"parameters_obj_name\" (value was \"$parameters_obj_name\")");
+        (!ref($fit_method)) or push(@_bad_arguments, "Invalid type for argument 4 \"fit_method\" (value was \"$fit_method\")");
         if (@_bad_arguments) {
 	    my $msg = "Invalid arguments passed to fit_growth_curve:\n" . join("", map { "\t$_\n" } @_bad_arguments);
 	    Bio::KBase::Exceptions::ArgumentValidationError->throw(error => $msg,
@@ -372,10 +375,11 @@ Parameters of a single growth curve
 <pre>
 a reference to a hash where the following keys are defined:
 mtx_column_id has a value which is a string
-growth_rate has a value which is a string
-lag_phase has a value which is a string
-max_growth has a value which is a string
-area_under_curve has a value which is a string
+method has a value which is a string
+growth_rate has a value which is a float
+lag_phase has a value which is a float
+max_growth has a value which is a float
+area_under_curve has a value which is a float
 
 </pre>
 
@@ -385,10 +389,11 @@ area_under_curve has a value which is a string
 
 a reference to a hash where the following keys are defined:
 mtx_column_id has a value which is a string
-growth_rate has a value which is a string
-lag_phase has a value which is a string
-max_growth has a value which is a string
-area_under_curve has a value which is a string
+method has a value which is a string
+growth_rate has a value which is a float
+lag_phase has a value which is a float
+max_growth has a value which is a float
+area_under_curve has a value which is a float
 
 
 =end text
@@ -397,7 +402,7 @@ area_under_curve has a value which is a string
 
 
 
-=head2 GrowthMatrixParameters
+=head2 GrowthParameters
 
 =over 4
 

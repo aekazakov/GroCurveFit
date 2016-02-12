@@ -41,9 +41,17 @@ parameters :
         ui-name : |
             Name of output data object
         short-hint : |
-            Name of the output CrowthMatrixParameters object
+            Name of the output CrowthParameters object
         long-hint  : |
-            Enter name for the output GrowthMatrixParameters object. Spaces are not allowed.
+            Enter name for the output GrowthParameters object. Spaces are not allowed.
+
+    fit_method :
+        ui-name : |
+            Which method to use for fitting of growth curves?
+        short-hint : |
+            Available methods are model, spline or both
+        long-hint  : |
+            Model method use growth models (gompertz, logistic,), spline method uses non-model spline fitting. By default, both methods are used in order model>spline, and output returns the first successfule result.
 
 description : |
 	<p>This method estimates four growth parameters for all samples in a growth matrix: maximum slope of growth curve, length of lag phase, maximal cell growth and integral (area under the growth curve).</p>
