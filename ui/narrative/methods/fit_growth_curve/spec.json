@@ -56,8 +56,8 @@
 			],
 			"output_mapping": [
 				{
-					"service_method_output_path": [0, "growth_parameters"],
-					"target_property": "growthParameters"
+					"service_method_output_path": [0, "output_object"],
+					"target_property": "outputObject"
 				},
 				{
 					"input_parameter": "growth_matrix_id",
