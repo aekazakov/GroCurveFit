@@ -392,7 +392,7 @@ methods[["GroCurveFit.fit_growth_curve"]] <- function(workspace_name, growth_mat
  	grofit_control <- grofit.control(fit.opt = fit_method,suppress.messages = TRUE, interactive = FALSE)
     print("Running grofit")
 
-    result <- gcFit2(time,data, control=grofit_control)
+    result <- gcFit(time,data, control=grofit_control)
     print ("grofit finished")
 	print("Creating output object")
 	result_frame <- summary(result)
