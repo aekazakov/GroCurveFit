@@ -39,21 +39,37 @@
 		    "optional" : false,
 		    "advanced" : false,
 		    "allow_multiple" : false,
-		    "default_values" : [ "b" ],
+		    "default_values" : [ "g" ],
 		    "field_type" : "dropdown",
 		    "dropdown_options":{
 		      "options": [
 		        {
-		          "value": "b",
-		          "display": "Perform model, then spline fit (returns the first successful result)"
+		          "value": "g",
+		          "display": "Perform Gompertz law growth fit"
+		        },
+		        {
+		          "value": "e",
+		          "display": "Perform modified Gompertz law growth fit"
+		        },
+		        {
+		          "value": "l",
+		          "display": "Perform logistic growth fit"
+		        },
+		        {
+		          "value": "r",
+		          "display": "Perform Richards law growth fit"
 		        },
 		        {
 		          "value": "m",
-		          "display": "Perform only model fit"
+		          "display": "Perform model fit (all four models, returns the first successful result)"
 		        },
 		        {
 		          "value": "s",
-		          "display": "Perform only spline fit"
+		          "display": "Perform model-free spline fit"
+		        },
+		        {
+		          "value": "b",
+		          "display": "Perform model, then spline fit (returns the first successful result)"
 		        }
 		      ]
 			}

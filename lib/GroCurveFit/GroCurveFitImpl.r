@@ -100,7 +100,29 @@ methods[["GroCurveFit.fit_growth_curve"]] <- function(workspace_name, growth_mat
     	
 	}
 	
- 	grofit_control <- grofit.control(fit.opt = fit_method,suppress.messages = TRUE, interactive = FALSE)
+	if (fit_method == "g") {
+		fit_method <- "m"
+		fit_models <- c("gompertz")
+	} else if (fit_method == "e") {
+		fit_method <- "m"
+		fit_models <- c("gompertz.exp")
+	} else if (fit_method == "l") {
+		fit_method <- "m"
+		fit_models <- c("logistic")
+	} else if (fit_method == "r") {
+		fit_method <- "m"
+		fit_models <- c("richards")
+	} else if (fit_method == "m") {
+		fit_method <- "m"
+		fit_models <- c("gompertz.exp")
+	} else if (fit_method == "s") {
+		fit_method <- "s"
+		fit_models <- c("logistic","richards","gompertz", "gompertz.exp")
+	} else if (fit_method == "b") {
+		fit_method <- "b"
+		fit_models <- c("logistic","richards","gompertz", "gompertz.exp")
+	}
+ 	grofit_control <- grofit.control(fit.opt = fit_method, model.type = fit_models, suppress.messages = TRUE, interactive = FALSE)
     print("Running grofit")
 
     result <- gcFit(time,data, control=grofit_control)
