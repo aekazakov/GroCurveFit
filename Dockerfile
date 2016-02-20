@@ -11,10 +11,10 @@ RUN . /kb/dev_container/user-env.sh && cd /kb/dev_container/modules && \
   
 # RUN apt-get update
 ENV R_LIBS=/kb/deployment/lib
-RUN R -q -e 'if(!require(jsonlite)) install.packages("jsonlite", repos="http://cran.us.r-project.org")'
-RUN R -q -e 'if(!require(httr)) install.packages("httr", repos="http://cran.us.r-project.org")'
-RUN R -q -e 'if(!require(raster)) install.packages("raster", repos="http://cran.us.r-project.org")'
-RUN R -q -e 'if(!require(grofit)) install.packages("grofit", repos="http://cran.us.r-project.org")'
+RUN R -q -e 'if(!require(jsonlite)) {install.packages("jsonlite", repos="http://cran.us.r-project.org"); library(jsonlite)}'
+RUN R -q -e 'if(!require(httr)) {install.packages("httr", repos="http://cran.us.r-project.org"); library(httr)}'
+RUN R -q -e 'if(!require(raster)) {install.packages("raster", repos="http://cran.us.r-project.org"); library(raster)}'
+RUN R -q -e 'if(!require(grofit)) {install.packages("grofit", repos="http://cran.us.r-project.org"); library(grofit)}'
 RUN apt-get -y install r-cran-evaluate r-cran-codetools r-cran-testthat
 
 # -----------------------------------------

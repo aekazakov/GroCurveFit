@@ -7,6 +7,7 @@ module GroCurveFit {
 
     /*
         A string representing a GrowthMatrix id.
+        @id ws KBaseEnigmaMetals.GrowthMatrix
     */
     
     typedef string growth_matrix_id;
@@ -39,7 +40,7 @@ module GroCurveFit {
     */
 
 	typedef structure{
-    	string matrix_id;
+    	growth_matrix_id matrix_id;
     	list <GrowthCurveParameters> parameters;
 	} GrowthParameters;
 

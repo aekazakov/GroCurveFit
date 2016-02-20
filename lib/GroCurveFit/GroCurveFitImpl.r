@@ -16,7 +16,7 @@ methods[["GroCurveFit.fit_growth_curve"]] <- function(workspace_name, growth_mat
     provenance <- context[['provenance']]
     ws_url <- context[['config']][['workspace-url']]
     ws_client <- WorkspaceClient(ws_url, token)
-    ref <- unbox(paste(workspace_name,"/",growth_matrix_id, sep=""))
+    ref <- unbox(paste(workspace_name,growth_matrix_id, sep="/"))
     object_identity <- list(ref=unbox(ref))
     object_data <- ws_client$get_objects(list(object_identity))[[1]]
     growth_matrix_obj <- object_data[['data']]
@@ -162,7 +162,7 @@ methods[["GroCurveFit.fit_growth_curve"]] <- function(workspace_name, growth_mat
 	}
 	
 	
-	output_obj <- list(matrix_id = unbox(growth_matrix_id), parameters = ret_data)
+	output_obj <- list(matrix_id = ref, parameters = ret_data)
 
 	print(toJSON(output_obj))
 	print("Saving output object to workspace")

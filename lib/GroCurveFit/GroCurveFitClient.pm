@@ -273,6 +273,7 @@ sub _validate_version {
 =item Description
 
 A string representing a GrowthMatrix id.
+@id ws KBaseEnigmaMetals.GrowthMatrix
 
 
 =item Definition
@@ -419,7 +420,7 @@ Parameters of all growth curves for a GrowthMatrix
 
 <pre>
 a reference to a hash where the following keys are defined:
-matrix_id has a value which is a string
+matrix_id has a value which is a GroCurveFit.growth_matrix_id
 parameters has a value which is a reference to a list where each element is a GroCurveFit.GrowthCurveParameters
 
 </pre>
@@ -429,7 +430,7 @@ parameters has a value which is a reference to a list where each element is a Gr
 =begin text
 
 a reference to a hash where the following keys are defined:
-matrix_id has a value which is a string
+matrix_id has a value which is a GroCurveFit.growth_matrix_id
 parameters has a value which is a reference to a list where each element is a GroCurveFit.GrowthCurveParameters
 
 

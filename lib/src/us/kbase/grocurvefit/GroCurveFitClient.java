@@ -146,7 +146,7 @@ public class GroCurveFitClient {
      * growth_matrix_id - the GrowthMatrix to fit.
      * </pre>
      * @param   arg1   instance of original type "workspace_name" (A string representing a workspace name.)
-     * @param   arg2   instance of original type "growth_matrix_id" (A string representing a GrowthMatrix id.)
+     * @param   arg2   instance of original type "growth_matrix_id" (A string representing a GrowthMatrix id. @id ws KBaseEnigmaMetals.GrowthMatrix)
      * @param   arg3   instance of original type "parameters_obj_name" (A string representing final object name)
      * @param   fitMethod   instance of String
      * @return   parameter "output_object" of String
