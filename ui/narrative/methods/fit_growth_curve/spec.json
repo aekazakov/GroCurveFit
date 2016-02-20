@@ -39,7 +39,7 @@
 		    "optional" : false,
 		    "advanced" : false,
 		    "allow_multiple" : false,
-		    "default_values" : [ "g" ],
+		    "default_values" : [ "s" ],
 		    "field_type" : "dropdown",
 		    "dropdown_options":{
 		      "options": [
