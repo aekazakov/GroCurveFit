@@ -60,16 +60,8 @@
 		          "display": "Perform Richards law growth fit"
 		        },
 		        {
-		          "value": "m",
-		          "display": "Perform model fit (all four models, returns the first successful result)"
-		        },
-		        {
 		          "value": "s",
 		          "display": "Perform model-free spline fit"
-		        },
-		        {
-		          "value": "b",
-		          "display": "Perform model, then spline fit (returns the first successful result)"
 		        }
 		      ]
 			}
