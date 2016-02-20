@@ -44,6 +44,10 @@
 		    "dropdown_options":{
 		      "options": [
 		        {
+		          "value": "s",
+		          "display": "Perform model-free spline fit"
+		        },
+		        {
 		          "value": "g",
 		          "display": "Perform Gompertz law growth fit"
 		        },
@@ -58,10 +62,6 @@
 		        {
 		          "value": "r",
 		          "display": "Perform Richards law growth fit"
-		        },
-		        {
-		          "value": "s",
-		          "display": "Perform model-free spline fit"
 		        }
 		      ]
 			}
