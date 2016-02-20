@@ -19,6 +19,8 @@ methods[["GroCurveFit.fit_growth_curve"]] <- function(workspace_name, growth_mat
     ref <- unbox(paste(workspace_name,growth_matrix_id, sep="/"))
     object_identity <- list(ref=unbox(ref))
     object_data <- ws_client$get_objects(list(object_identity))[[1]]
+    input_info <- object_data[['info']]
+    input_ref <- paste(input_info[[7]],input_info[[1]],input_info[[5]],sep="/")
     growth_matrix_obj <- object_data[['data']]
 	data <- growth_matrix_obj[['data']]
     col_ids <- data[['col_ids']]
@@ -161,8 +163,7 @@ methods[["GroCurveFit.fit_growth_curve"]] <- function(workspace_name, growth_mat
 		}		
 	}
 	
-	
-	output_obj <- list(matrix_id = ref, parameters = ret_data)
+	output_obj <- list(matrix_id = unbox(input_ref), parameters = ret_data)
 
 	print(toJSON(output_obj))
 	print("Saving output object to workspace")
