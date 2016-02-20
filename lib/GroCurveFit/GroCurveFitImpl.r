@@ -168,8 +168,12 @@ methods[["GroCurveFit.fit_growth_curve"]] <- function(workspace_name, growth_mat
 	print(toJSON(output_obj))
 	print("Saving output object to workspace")
 	
+	prov_act <- list(service=unbox("GroCurveFit"),method=unbox("fit_growth_curve"),
+        service_ver=unbox("0.1"), input_ws_objects=list(unbox(input_ref)), 
+        description=unbox("Growth curve fit"), method_params=list(unbox(workspace_name), unbox(growth_matrix_id), unbox(parameters_obj_name), unbox(fit_method)))
+    prov <- list(prov_act)
 	ws_output <- ws_client$save_objects(list(workspace=unbox(workspace_name), objects=list(list(
-            type=unbox('KBaseEnigmaMetals.GrowthParameters'), name=unbox(parameters_obj_name), data=output_obj))))
+            type=unbox('KBaseEnigmaMetals.GrowthParameters'), name=unbox(parameters_obj_name), data=output_obj, provenance=prov))))
 
 	ret <- unbox(ws_output[[1]][[2]])
 	print("Done")
