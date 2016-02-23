@@ -91,17 +91,13 @@
 				}
 			],
 			"output_mapping": [
-				{
+			        {
 					"service_method_output_path": [0, "output_object"],
-					"target_property": "outputObject"
-				},
-				{
-					"input_parameter": "growth_matrix_id",
-					"target_property": "growthMatrixId"
+					"target_property": "growthParametersID"
 				},
 				{
 					"narrative_system_variable": "workspace",
-					"target_property": "workspaceName"
+					"target_property": "workspaceID"
 				}
 			]
 		}
