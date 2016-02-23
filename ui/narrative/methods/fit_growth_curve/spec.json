@@ -92,7 +92,7 @@
 			],
 			"output_mapping": [
 			        {
-					"service_method_output_path": [0, "output_object"],
+					"input_parameter": "parameters_obj_name",
 					"target_property": "growthParametersID"
 				},
 				{
